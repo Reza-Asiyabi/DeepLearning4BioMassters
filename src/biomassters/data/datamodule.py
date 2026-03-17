@@ -120,6 +120,7 @@ class BioMasstersDataModule(pl.LightningDataModule):
     # ------------------------------------------------------------------
 
     def train_dataloader(self) -> DataLoader:
+        assert self._train_ds is not None, "Call setup('fit') before train_dataloader()"
         return DataLoader(
             self._train_ds,
             batch_size=self.batch_size,
@@ -130,6 +131,7 @@ class BioMasstersDataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self) -> DataLoader:
+        assert self._val_ds is not None, "Call setup('fit') before val_dataloader()"
         return DataLoader(
             self._val_ds,
             batch_size=self.batch_size,
@@ -139,6 +141,7 @@ class BioMasstersDataModule(pl.LightningDataModule):
         )
 
     def test_dataloader(self) -> DataLoader:
+        assert self._test_ds is not None, "Call setup('test') before test_dataloader()"
         return DataLoader(
             self._test_ds,
             batch_size=self.batch_size,

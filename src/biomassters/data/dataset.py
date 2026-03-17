@@ -20,7 +20,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-S1_CHANNELS = 4   # ASC VV, ASC VH, DSC VV, DSC VH
+S1_CHANNELS = 4  # ASC VV, ASC VH, DSC VV, DSC VH
 S2_CHANNELS = 11  # B2–B8A, B11, B12, CLP
 N_MONTHS = 12
 
@@ -67,9 +67,7 @@ class BioMasstersDataset(Dataset):
     def _discover_chips(self) -> List[str]:
         """Scan the feature directory and return sorted list of chip IDs."""
         if not self._feature_dir.exists():
-            raise FileNotFoundError(
-                f"Feature directory not found: {self._feature_dir}"
-            )
+            raise FileNotFoundError(f"Feature directory not found: {self._feature_dir}")
 
         # Use whichever modality is requested to find chips
         modality_key = "S1" if "s1" in self.modalities else "S2"
@@ -91,7 +89,7 @@ class BioMasstersDataset(Dataset):
 
     def __getitem__(self, idx: int) -> Dict[str, Any]:
         chip_id = self._chip_ids[idx]
-        image = self._load_image(chip_id)          # (T, C, H, W)
+        image = self._load_image(chip_id)  # (T, C, H, W)
         target, mask = self._load_target(chip_id)  # (1, H, W), (1, H, W)
 
         sample: Dict[str, Any] = {
@@ -153,9 +151,7 @@ class BioMasstersDataset(Dataset):
         image = np.stack(frames, axis=0)  # (T, C, H, W)
         return torch.from_numpy(image)
 
-    def _load_target(
-        self, chip_id: str
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+    def _load_target(self, chip_id: str) -> Tuple[torch.Tensor, torch.Tensor]:
         """Load the AGB target and derive the valid-pixel mask.
 
         Returns:
@@ -176,7 +172,7 @@ class BioMasstersDataset(Dataset):
             agb = np.zeros((H, W), dtype=np.float32)
 
         target = torch.from_numpy(agb).unsqueeze(0)  # (1, H, W)
-        mask = (target.abs() >= 0.5).float()          # (1, H, W)
+        mask = (target.abs() >= 0.5).float()  # (1, H, W)
         return target, mask
 
     # ------------------------------------------------------------------

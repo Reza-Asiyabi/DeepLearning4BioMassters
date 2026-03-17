@@ -192,6 +192,10 @@ class SwinUNet(nn.Module):
             self.backbone = _MockSwinBackbone(output_size=output_size)
             feature_info = [96, 192, 384, 768]
 
+        # Store expected per-level channel counts (fine → coarse) so that the
+        # forward pass can detect and correct NHWC output from newer timm Swin.
+        self._backbone_channels: List[int] = list(feature_info)
+
         # FPN decoder (coarse features first)
         self.fpn = FPNDecoder(list(reversed(feature_info)), fpn_out_channels)
 
@@ -224,8 +228,14 @@ class SwinUNet(nn.Module):
         # Project channels to 3 (Swin convention): (B, C, H, W) → (B, 3, H, W)
         x = self.channel_adapter(x)
 
-        # Backbone: list of (B, C_i, H_i, W_i) from fine to coarse
+        # Backbone: list of feature maps from fine to coarse.
+        # Newer timm Swin models return NHWC tensors (B, H, W, C); normalise
+        # to NCHW by checking whether dim-1 matches the expected channel count.
         features: List[torch.Tensor] = self.backbone(x)
+        features = [
+            f.permute(0, 3, 1, 2).contiguous() if f.shape[1] != ch else f
+            for f, ch in zip(features, self._backbone_channels)
+        ]
 
         # FPN: coarse-to-fine for top-down merging
         fpn_features = self.fpn(list(reversed(features)))  # coarsest first
