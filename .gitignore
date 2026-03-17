@@ -1,0 +1,71 @@
+# Data (root-level dataset directory only — NOT src/biomassters/data/)
+/data/
+*.npy
+*.tif
+*.tiff
+
+# Model checkpoints and results
+results/*/checkpoints/
+*.ckpt
+*.pth
+*.pt
+
+# W&B
+wandb/
+*.wandb
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+.conda/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Secrets
+.env
+*.env
+secrets.yaml
+
+# Logs
+*.log
+logs/
+
+# Temporary
+tmp/
+temp/
+scratch/
+
+# Predictions (generated)
+predictions/
+
+# Dist
+dist/

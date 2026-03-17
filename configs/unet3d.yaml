@@ -1,0 +1,12 @@
+defaults:
+  - base
+
+model:
+  name: unet3d
+  base_channels: 32
+  depth: 4
+  dropout: 0.1
+
+# 3D U-Net is memory-intensive — reduce batch size
+data:
+  batch_size: 4

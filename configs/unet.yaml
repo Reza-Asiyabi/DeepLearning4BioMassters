@@ -1,0 +1,12 @@
+defaults:
+  - base
+
+model:
+  name: unet
+  base_channels: 64
+  depth: 4
+  dropout: 0.1
+
+# Override batch size — U-Net fuses all T channels; memory scales with T*C
+data:
+  batch_size: 8

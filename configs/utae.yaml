@@ -1,0 +1,17 @@
+defaults:
+  - base
+
+model:
+  name: utae
+  encoder_widths: [64, 128, 128]
+  ltae_n_head: 16
+  ltae_d_k: 4
+  ltae_mlp: [256, 128]
+  dropout: 0.1
+
+# U-TAE is lightweight — can use larger batch size
+data:
+  batch_size: 16
+
+optimizer:
+  lr: 1.0e-4

@@ -1,0 +1,15 @@
+defaults:
+  - base
+
+model:
+  name: swin_unet
+  swin_model_name: swin_tiny_patch4_window7_224
+  pretrained: false       # set to true to use ImageNet weights
+  fpn_out_channels: 256
+  output_size: [256, 256]
+
+optimizer:
+  lr: 5.0e-5              # lower LR for transformer backbone
+
+data:
+  batch_size: 4           # Swin is memory-heavy

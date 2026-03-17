@@ -1,0 +1,15 @@
+defaults:
+  - base
+
+model:
+  name: tempfusionnet
+  base_channels: 32
+  depth: 4
+  use_se: true
+  se_reduction: 16
+
+data:
+  batch_size: 4           # 3D encoder requires more memory
+
+optimizer:
+  lr: 1.0e-4
